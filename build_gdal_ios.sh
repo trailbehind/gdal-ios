@@ -123,7 +123,8 @@ echo "configure proj"
     "$@"
 
 echo "make install proj"
-time make -j8 install
+time make -j8
+time make install
 
 popd
 
@@ -195,8 +196,6 @@ CPPFLAGS=$GDAL_CPP_FLAGS \
 
 echo "building gdal"
 time make -j8
-
-echo "installing"
 time make install
 
 echo "Gdal build complete"
