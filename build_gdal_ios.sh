@@ -48,7 +48,6 @@ target=$1
 shift
 
 case $target in
-
         device )
         arch="${DEFAULT_ARCHITECTURE}"
         platform=iphoneos
@@ -65,8 +64,8 @@ case $target in
         echo No target found!!!
         usage
         exit 2
-
 esac
+
 if [ $arch = "arm64" ]
     then
     host="arm-apple-darwin"
@@ -84,13 +83,14 @@ echo
 echo library will be exported to $prefix
 
 #setup compiler flags
-export CC=`xcrun -find -sdk iphoneos gcc`
+export CC=`xcrun -find -sdk iphoneos clang`
 export CFLAGS="-Wno-error=implicit-function-declaration -arch ${arch} -pipe -Os -gdwarf-2 -isysroot ${platform_sdk_dir} ${extra_cflags}"
 export LDFLAGS="-arch ${arch} -isysroot ${platform_sdk_dir}"
-export CXX=`xcrun -find -sdk iphoneos g++`
+export CXX=`xcrun -find -sdk iphoneos clang++`
 export CXXFLAGS="${CFLAGS}"
 export CPP=`xcrun -find -sdk iphoneos cpp`
-export CXXCPP="${CPP}"
+export CXXCPP="${CXX} -E"
+GDAL_CPP_FLAGS="-isysroot${platform_sdk_dir} -D__arm__=1"
 
 echo CFLAGS ${CFLAGS}
 
@@ -138,54 +138,67 @@ if [ ! -e $GDAL_DIR ]; then
 fi
 
 #configure and build gdal
-cd $GDAL_DIR
+pushd $GDAL_DIR
 
 echo "cleaning gdal"
 make clean || echo "clean failed"
 
 echo "configure gdal"
+CPPFLAGS=$GDAL_CPP_FLAGS \
 ./configure \
     --prefix="${prefix}" \
+    --with-local="${prefix}" \
     --host=$host \
+    --disable-debug \
     --with-sysroot=$platform_sdk_dir \
     --disable-shared \
     --enable-static \
     --with-hide-internal-symbols=yes \
     --with-unix-stdio-64=no \
-    --with-geos=no \
     --with-sse=no \
     --with-avx=no \
     --with-static-proj4=${prefix} \
-    --without-sqlite3 \
     --with-libz=${platform_sdk_dir} \
-    --without-sde \
-    --without-pg \
-    --without-grass \
-    --without-libgrass \
+    --with-libtiff=yes \
     --without-cfitsio \
-    --without-pcraster \
-    --without-netcdf \
-    --without-ogdi \
+    --without-curl \
     --without-fme \
+    --without-geos \
+    --without-grass \
+    --without-grib \
     --without-hdf4 \
     --without-hdf5 \
-    --without-jasper \
-    --without-kakadu \
-    --without-grib \
-    --without-mysql \
-    --without-ingres \
-    --without-xerces \
-    --without-odbc \
-    --without-curl \
     --without-idb \
+    --without-ingres \
+    --without-jasper \
+    --without-jp2mrsid \
+    --without-jpeg12 \
+    --without-kakadu \
+    --without-libgrass \
+    --without-mrsid \
+    --without-msg \
+    --without-mysql \
+    --without-netcdf \
+    --without-oci \
+    --without-odbc \
+    --without-ogdi \
+    --without-pcraster \
+    --without-perl \
+    --without-pg \
+    --without-php \
+    --without-podofo \
     --without-poppler \
-    --with-libtiff=yes \
-    --without-podofo
+    --without-python \
+    --without-sde \
+    --without-sqlite3 \
+    --without-xerces
 
 echo "building gdal"
-time make
+time make -j8
 
 echo "installing"
 time make install
 
 echo "Gdal build complete"
+
+popd
