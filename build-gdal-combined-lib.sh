@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e -x -u
+
 PREFIX=`pwd`/install/
 rm -rf $PREFIX
 mkdir $PREFIX
@@ -8,8 +10,8 @@ mkdir $LOG
 
 if [ -e ${PREFIX} ]
 then
-	echo removing ${PREFIX}
-	rm -rf ${PREFIX}
+    echo removing ${PREFIX}
+    rm -rf ${PREFIX}
 fi
 
 mkdir ${PREFIX}

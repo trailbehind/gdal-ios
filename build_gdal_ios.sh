@@ -1,7 +1,7 @@
 #!/bin/bash
-set -u
+set -e -x -u
 
-default_iphoneos_version=8.3
+default_iphoneos_version=10.0
 default_architecture=armv7
 
 export IPHONEOS_DEPLOYMENT_TARGET="${IPHONEOS_DEPLOYMENT_TARGET:-$default_iphoneos_version}"
@@ -99,58 +99,66 @@ proj_prefix=$prefix
 echo install proj to $proj_prefix
 
 #download proj4 if necesary
-if [ ! -e proj-4.8.0 ]
-then
-    echo proj4 missing, downloading
-    wget http://download.osgeo.org/proj/proj-4.8.0.tar.gz
-    tar -xzf proj-4.8.0.tar.gz
+PROJ_DIR=proj-4.9.3
+if [ ! -e $PROJ_DIR ]; then
+    if [ ! -e proj-4.9.3.tar.gz ]; then
+        echo "proj missing, downloading"
+        wget https://download.osgeo.org/proj/proj-4.9.3.tar.gz
+    fi
+    tar -xzf proj-4.9.3.tar.gz
 fi
 
 #configure and build proj4
-pushd proj-4.8.0
+pushd $PROJ_DIR
 
-echo
 echo "cleaning proj"
-make clean
+make clean || echo "clean failed"
 
-echo
 echo "configure proj"
 ./configure \
     --prefix=${proj_prefix} \
     --enable-shared=no \
     --enable-static=yes \
     --host=$host \
-    "$@" || exit
+    "$@"
 
-echo
 echo "make install proj"
-time make install || exit
+time make -j8 install
 
 popd
 
+GDAL_DIR=gdal-2.4.0
 #download gdal if necesary
-if [ ! -e gdal-1.11.2 ]
-then
-    wget http://download.osgeo.org/gdal/1.11.0/gdal-1.11.2.tar.gz
-    tar -xzf gdal-1.11.2.tar.gz
+if [ ! -e $GDAL_DIR ]; then
+    if [ ! -e gdal-2.4.0.tar.gz ]; then
+        echo "gdal missing, downloading"
+        wget http://download.osgeo.org/gdal/2.4.0/gdal-2.4.0.tar.gz
+    fi
+    tar -xzf gdal-2.4.0.tar.gz
 fi
 
 #configure and build gdal
-cd gdal-1.11.2
+cd $GDAL_DIR
 
 echo "cleaning gdal"
-make clean
+make clean || echo "clean failed"
 
-echo
 echo "configure gdal"
 ./configure \
     --prefix="${prefix}" \
     --host=$host \
+    --with-sysroot=$platform_sdk_dir \
     --disable-shared \
     --enable-static \
-    --with-hide-internal-symbols \
+    --with-hide-internal-symbols=yes \
     --with-unix-stdio-64=no \
     --with-geos=no \
+    --with-sse=no \
+    --with-avx=no \
+    --with-static-proj4=${prefix} \
+    --without-sqlite3 \
+    --with-libz=${platform_sdk_dir} \
+    --without-sde \
     --without-pg \
     --without-grass \
     --without-libgrass \
@@ -170,20 +178,13 @@ echo "configure gdal"
     --without-odbc \
     --without-curl \
     --without-idb \
-    --without-sde \
-    --with-sse=no \
-    --with-avx=no \
-    --with-static-proj4=${prefix} \
-    --with-sqlite3=${platform_sdk_dir} \
-    || exit
+    --without-poppler \
+    --with-libtiff=yes \
+    --without-podofo
 
-#echo '#include "cpl_config_extras.h"' >> port/cpl_config.h
-
-echo
 echo "building gdal"
 time make
 
-echo
 echo "installing"
 time make install
 
