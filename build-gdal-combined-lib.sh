@@ -18,16 +18,16 @@ fi
 
 mkdir ${PREFIX}
 
-for f in "armv7" "armv7s" "arm64"; do
-    echo Building $f
-    ./build_gdal_ios.sh -p ${PREFIX} -a $f device 2>&1 | tee "${LOG}/${f}.txt"
-done
-
-# echo Building simulator
-# for f in "i386" "x86_64"; do
+# for f in "armv7" "armv7s" "arm64"; do
 #     echo Building $f
-#     ./build_gdal_ios.sh -p ${PREFIX} -a $f simulator 2>&1 | tee "${LOG}/simulator.txt"
+#     ./build_gdal_ios.sh -p ${PREFIX} -a $f device 2>&1 | tee "${LOG}/${f}.txt"
 # done
+
+echo Building simulator
+for f in "i386" "x86_64"; do
+    echo Building $f
+    ./build_gdal_ios.sh -p ${PREFIX} -a $f simulator 2>&1 | tee "${LOG}/simulator.txt"
+done
 
 
 # SDK_VERSION=8.3
