@@ -50,9 +50,17 @@ ${PREFIX}/arm64/iphoneos${SDK_VERSION}.sdk/lib/libproj.a \
 -output ${PREFIX}/libproj.a \
 -create | tee $LOG/lipo-proj.txt
 
+
+# copy proj headers into place
+mkdir -p ${PREFIX}/proj/
+cp proj-4.9.3/src/*.h ${PREFIX}/proj/
+
 #create zipfile for cocoapods distribution
 cd ${PREFIX}
 mkdir GDAL
-cp libgdal.a ${PREFIX}/libproj.a GDAL
+cp libgdal.a GDAL
 cp arm64/iphoneos${SDK_VERSION}.sdk/include/*.h GDAL
 zip gdal.zip GDAL/*
+
+cp libproj.a proj
+zip proj-4.9.3.zip proj/*
