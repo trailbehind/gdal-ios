@@ -183,6 +183,7 @@ CPPFLAGS=$GDAL_CPP_FLAGS \
     --without-oci \
     --without-odbc \
     --without-ogdi \
+    --without-openjpeg \
     --without-pcraster \
     --without-perl \
     --without-pg \
@@ -191,6 +192,7 @@ CPPFLAGS=$GDAL_CPP_FLAGS \
     --without-poppler \
     --without-python \
     --without-sde \
+    --with-sfcgal=no \
     --without-sqlite3 \
     --without-xerces
 
