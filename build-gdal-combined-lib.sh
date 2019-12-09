@@ -8,7 +8,7 @@ LOG=./log
 rm -rf $LOG
 mkdir $LOG
 
-rm -rf proj-4.9.3 gdal-2.4.0
+rm -rf proj-4.9.3 gdal-2.4.3
 
 if [ -e ${PREFIX} ]
 then

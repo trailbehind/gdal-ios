@@ -1,6 +1,5 @@
-proj-4.9.3.tar.gz
 log
-proj-4.9.3
-gdal-2.4.0.tar.gz
-gdal-2.4.0
+proj-*
+gdal-*
 install
+*.gz
