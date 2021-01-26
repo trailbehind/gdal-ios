@@ -6,6 +6,9 @@ LOG=./log
 rm -rf $LOG
 mkdir $LOG
 
+PROJ_VERSION=6.3.2
+GDAL_VERSION=3.2.1
+
 if [ -e ${PREFIX} ]
 then
     echo removing ${PREFIX}
@@ -42,14 +45,14 @@ ${PREFIX}/arm64/iphoneos${SDK_VERSION}.sdk/lib/libproj.a \
 
 # copy proj headers into place
 mkdir -p ${PREFIX}/proj/
-cp proj-6.3.2/src/*.h ${PREFIX}/proj/
+cp proj-${PROJ_VERSION}/src/*.h ${PREFIX}/proj/
 
 #create zipfile for cocoapods distribution
 cd ${PREFIX}
 mkdir GDAL
 cp libgdal.a GDAL
 cp arm64/iphoneos${SDK_VERSION}.sdk/include/*.h GDAL
-zip gdal.zip GDAL/*
+zip gdal${GDAL_VERSION}.zip GDAL/*
 
 cp libproj.a proj
-zip proj-4.9.3.zip proj/*
+zip proj-${PROJ_VERSION}.zip proj/*
