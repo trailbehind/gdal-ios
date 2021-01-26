@@ -165,38 +165,8 @@ CPPFLAGS=$GDAL_CPP_FLAGS \
     --with-avx=no \
     --with-proj=${prefix} \
     --with-libz=${platform_sdk_dir} \
-    --with-libtiff=yes \
-    --without-cfitsio \
-    --without-curl \
-    --without-fme \
-    --without-geos \
-    --without-grass \
-    --without-hdf4 \
-    --without-hdf5 \
-    --without-idb \
-    --without-ingres \
-    --without-jasper \
-    --without-jp2mrsid \
-    --without-jpeg12 \
-    --without-kakadu \
-    --without-libgrass \
-    --without-mrsid \
-    --without-msg \
-    --without-mysql \
-    --without-netcdf \
-    --without-oci \
-    --without-odbc \
-    --without-ogdi \
-    --without-openjpeg \
-    --without-pcraster \
-    --without-perl \
-    --without-pg \
-    --without-podofo \
-    --without-poppler \
-    --without-python \
-    --with-sfcgal=no \
-    --without-sqlite3 \
-    --without-xerces
+    --with-libtiff=internal \
+    --disable-all-optional-drivers
 
 echo "building gdal"
 time make -j8
