@@ -131,14 +131,14 @@ time make install
 
 popd
 
-GDAL_DIR=gdal-2.4.3
+GDAL_DIR=gdal-2.4.4
 #download gdal if necesary
 if [ ! -e $GDAL_DIR ]; then
-    if [ ! -e gdal-2.4.3.tar.gz ]; then
+    if [ ! -e gdal-2.4.4.tar.gz ]; then
         echo "gdal missing, downloading"
-        wget https://download.osgeo.org/gdal/2.4.3/gdal-2.4.3.tar.gz
+        wget https://download.osgeo.org/gdal/2.4.4/gdal-2.4.4.tar.gz
     fi
-    tar -xzf gdal-2.4.3.tar.gz
+    tar -xzf gdal-2.4.4.tar.gz
 fi
 
 #configure and build gdal
