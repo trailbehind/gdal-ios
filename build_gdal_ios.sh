@@ -89,7 +89,7 @@ export CXX=`xcrun -find -sdk iphoneos clang++`
 export CXXFLAGS="${CFLAGS}"
 export CPP=`xcrun -find -sdk iphoneos cpp`
 export CXXCPP="${CXX} -E"
-GDAL_CPP_FLAGS="-isysroot${platform_sdk_dir} -D__arm__=1"
+GDAL_CPP_FLAGS="-isysroot${platform_sdk_dir}"
 
 echo CFLAGS ${CFLAGS}
 
