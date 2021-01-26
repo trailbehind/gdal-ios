@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e -x -u
 
-default_iphoneos_version=10.0
-default_architecture=armv7
+default_iphoneos_version=12.0
+default_architecture=arm64
 
 export IPHONEOS_DEPLOYMENT_TARGET="${IPHONEOS_DEPLOYMENT_TARGET:-$default_iphoneos_version}"
 DEFAULT_ARCHITECTURE="${DEFAULT_ARCHITECTURE:-$default_architecture}"
@@ -15,7 +15,7 @@ cat >&2 << EOF
     Usage: ${0} [-h] [-p prefix] [-a arch] target [configure_args]
         -h  Print help message
         -p  Installation prefix (default: \$HOME/Documents/iOS_GDAL...)
-        -a  Architecture target for compilation (default: armv7)
+        -a  Architecture target for compilation (default: arm64)
 
     The target must be "device" or "simulator".  Any additional arguments
     are passed to configure.
@@ -66,8 +66,7 @@ case $target in
         exit 2
 esac
 
-if [ $arch = "arm64" ]
-    then
+if [ $arch = "arm64" ]; then
     host="arm-apple-darwin"
 else
     host="${arch}-apple-darwin"
