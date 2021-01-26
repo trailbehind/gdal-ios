@@ -92,10 +92,8 @@ export CXXCPP="${CXX} -E"
 GDAL_CPP_FLAGS="-isysroot${platform_sdk_dir}"
 
 if [ $arch = "arm64" ]; then
-    GDAL_CPP_FLAGS="$GDAL_CPP_FLAGS -D__arm__=1"
+    GDAL_CPP_FLAGS="${GDAL_CPP_FLAGS} -D__arm__=1"
 fi
-
-echo CFLAGS ${CFLAGS}
 
 #set proj4 install destination
 proj_prefix=$prefix
@@ -133,14 +131,14 @@ time make install
 popd
 
 GDAL_VERSION=3.2.1
-GDAL_DIR=gdal-$GDAL_VERSION
+GDAL_DIR=gdal-${GDAL_VERSION}
 #download gdal if necesary
 if [ ! -e $GDAL_DIR ]; then
-    if [ ! -e gdal-$GDAL_VERSION.tar.gz ]; then
+    if [ ! -e gdal-${GDAL_VERSION}.tar.gz ]; then
         echo "gdal missing, downloading"
-        wget https://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz
+        wget https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz
     fi
-    tar -xzf gdal-$GDAL_VERSION.tar.gz
+    tar -xzf gdal-${GDAL_VERSION}.tar.gz
 fi
 
 #configure and build gdal
