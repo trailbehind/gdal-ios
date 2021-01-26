@@ -26,7 +26,6 @@ for f in "x86_64"; do
     ./build_gdal_ios.sh -p ${PREFIX} -a $f simulator 2>&1 | tee "${LOG}/simulator.txt"
 done
 
-
 SDK_VERSION=12.0
 
 lipo \
@@ -43,7 +42,7 @@ ${PREFIX}/arm64/iphoneos${SDK_VERSION}.sdk/lib/libproj.a \
 
 # copy proj headers into place
 mkdir -p ${PREFIX}/proj/
-cp proj-4.9.3/src/*.h ${PREFIX}/proj/
+cp proj-6.3.2/src/*.h ${PREFIX}/proj/
 
 #create zipfile for cocoapods distribution
 cd ${PREFIX}
