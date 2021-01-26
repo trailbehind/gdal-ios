@@ -102,13 +102,14 @@ proj_prefix=$prefix
 echo install proj to $proj_prefix
 
 #download proj4 if necesary
-PROJ_DIR=proj-4.9.3
+PROJ_VERSION=6.3.2
+PROJ_DIR=proj-$PROJ_VERSION
 if [ ! -e $PROJ_DIR ]; then
-    if [ ! -e proj-4.9.3.tar.gz ]; then
+    if [ ! -e proj-$PROJ_VERSION.tar.gz ]; then
         echo "proj missing, downloading"
-        wget https://download.osgeo.org/proj/proj-4.9.3.tar.gz
+        wget https://download.osgeo.org/proj/proj-$PROJ_VERSION.tar.gz
     fi
-    tar -xzf proj-4.9.3.tar.gz
+    tar -xzf proj-$PROJ_VERSION.tar.gz
 fi
 
 #configure and build proj4
@@ -131,14 +132,15 @@ time make install
 
 popd
 
-GDAL_DIR=gdal-2.4.4
+GDAL_VERSION=3.2.1
+GDAL_DIR=gdal-$GDAL_VERSION
 #download gdal if necesary
 if [ ! -e $GDAL_DIR ]; then
-    if [ ! -e gdal-2.4.4.tar.gz ]; then
+    if [ ! -e gdal-$GDAL_VERSION.tar.gz ]; then
         echo "gdal missing, downloading"
-        wget https://download.osgeo.org/gdal/2.4.4/gdal-2.4.4.tar.gz
+        wget https://download.osgeo.org/gdal/$GDAL_VERSION/gdal-$GDAL_VERSION.tar.gz
     fi
-    tar -xzf gdal-2.4.4.tar.gz
+    tar -xzf gdal-$GDAL_VERSION.tar.gz
 fi
 
 #configure and build gdal
@@ -161,7 +163,7 @@ CPPFLAGS=$GDAL_CPP_FLAGS \
     --with-unix-stdio-64=no \
     --with-sse=no \
     --with-avx=no \
-    --with-static-proj4=${prefix} \
+    --with-proj=${prefix} \
     --with-libz=${platform_sdk_dir} \
     --with-libtiff=yes \
     --without-cfitsio \
@@ -169,7 +171,6 @@ CPPFLAGS=$GDAL_CPP_FLAGS \
     --without-fme \
     --without-geos \
     --without-grass \
-    --without-grib \
     --without-hdf4 \
     --without-hdf5 \
     --without-idb \
@@ -190,11 +191,9 @@ CPPFLAGS=$GDAL_CPP_FLAGS \
     --without-pcraster \
     --without-perl \
     --without-pg \
-    --without-php \
     --without-podofo \
     --without-poppler \
     --without-python \
-    --without-sde \
     --with-sfcgal=no \
     --without-sqlite3 \
     --without-xerces

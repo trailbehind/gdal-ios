@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eux -o pipefail
 
-PREFIX=`pwd`/install/
+PREFIX=`pwd`/install
 rm -rf $PREFIX
 mkdir $PREFIX
 LOG=./log
