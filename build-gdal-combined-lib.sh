@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x -u
+set -eux -o pipefail
 
 PREFIX=`pwd`/install/
 rm -rf $PREFIX

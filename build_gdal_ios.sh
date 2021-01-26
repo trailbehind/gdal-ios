@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x -u
+set -eux -o pipefail
 
 default_iphoneos_version=12.0
 default_architecture=arm64
@@ -90,6 +90,10 @@ export CXXFLAGS="${CFLAGS}"
 export CPP=`xcrun -find -sdk iphoneos cpp`
 export CXXCPP="${CXX} -E"
 GDAL_CPP_FLAGS="-isysroot${platform_sdk_dir}"
+
+if [ $arch = "arm64" ]; then
+    GDAL_CPP_FLAGS="$GDAL_CPP_FLAGS -D__arm__=1"
+fi
 
 echo CFLAGS ${CFLAGS}
 
