@@ -92,7 +92,7 @@ export CXXCPP="${CXX} -E"
 GDAL_CPP_FLAGS="-isysroot${platform_sdk_dir}"
 
 if [ $arch = "arm64" ]; then
-    GDAL_CPP_FLAGS="${GDAL_CPP_FLAGS} -D__arm__=1"
+    GDAL_CPP_FLAGS="$GDAL_CPP_FLAGS -D__arm__=1 -DPNG_ARM_NEON_OPT=0"
 fi
 
 #set proj4 install destination
