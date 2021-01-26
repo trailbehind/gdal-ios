@@ -167,6 +167,7 @@ CPPFLAGS=$GDAL_CPP_FLAGS \
     --with-proj-extra-lib-for-test="-lsqlite3" \
     --with-libz=${platform_sdk_dir} \
     --with-libtiff=internal \
+    --without-jpeg12 \
     --disable-all-optional-drivers
 
 echo "building gdal"
