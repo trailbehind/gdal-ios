@@ -84,7 +84,7 @@ echo library will be exported to $prefix
 #setup compiler flags
 export CC=`xcrun -find -sdk iphoneos clang`
 export CFLAGS="-Wno-error=implicit-function-declaration -arch ${arch} -pipe -Os -gdwarf-2 -isysroot ${platform_sdk_dir} ${extra_cflags}"
-export LDFLAGS="-arch ${arch} -isysroot ${platform_sdk_dir}"
+export LDFLAGS="-arch ${arch} -isysroot ${platform_sdk_dir} -L${platform_sdk_dir}/usr"
 export CXX=`xcrun -find -sdk iphoneos clang++`
 export CXXFLAGS="${CFLAGS}"
 export CPP=`xcrun -find -sdk iphoneos cpp`
@@ -164,6 +164,7 @@ CPPFLAGS=$GDAL_CPP_FLAGS \
     --with-sse=no \
     --with-avx=no \
     --with-proj=${prefix} \
+    --with-proj-extra-lib-for-test="-lsqlite3" \
     --with-libz=${platform_sdk_dir} \
     --with-libtiff=internal \
     --disable-all-optional-drivers
